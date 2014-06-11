@@ -1,7 +1,8 @@
 class Player:
-
+    players = {} # Store pointers to 'x' player and 'o' player
     def __init__(self, symbol):
         self.symbol = symbol
+        Player.players[symbol] = self
 
 class HumanPlayer(Player):
 
