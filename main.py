@@ -9,7 +9,7 @@ def main():
     while not board.endGame():
         currentPlayer = players[turnNum % 2]
         print "%s's turn" % currentPlayer
-        currentPlayer.takeTurn(board)
+        currentPlayer.takeTurn()
         print board
         turnNum += 1
     if board.winner != None:

@@ -3,13 +3,15 @@ class Player:
     def __init__(self, symbol, board):
         self.symbol = symbol
         board.players[symbol] = self
+        self.board = board
 
     def __str__(self):
         return self.symbol
 
 class HumanPlayer(Player):
 
-    def takeTurn(self, board):
+    def takeTurn(self):
+        board = self.board
         isValid = False
         while(not isValid):
             move = raw_input("Where would you like to move?\nEnter coordinates: ").strip().split()
