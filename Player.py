@@ -4,6 +4,9 @@ class Player:
         self.symbol = symbol
         board.players[symbol] = self
 
+    def __str__(self):
+        return self.symbol
+
 class HumanPlayer(Player):
 
     def takeTurn(self, board):
