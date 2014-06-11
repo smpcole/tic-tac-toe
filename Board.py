@@ -6,6 +6,16 @@ class Board:
         self.spacesLeft = 9
         self.players = {} # Store pointers to 'x' player and 'o' player
 
+    def copy(self):
+        cpy = Board();
+        for i in xrange(3):
+            for j in xrange(3):
+                cpy[i][j] = self[i][j]
+        cpy.players = self.players
+        cpy.spacesLeft = self.spacesLeft
+        cpy.winner = self.winner
+        return cpy
+
     def __getitem__(self, i):
         return self.board[i]
 
