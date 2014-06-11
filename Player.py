@@ -15,5 +15,6 @@ class HumanPlayer(Player):
             if board[move[0]][move[1]] == ' ':
                 isValid = True
                 board[move[0]][move[1]] = self.symbol
+                board.spacesLeft -= 1
             else:
                 print "Sorry, %d %d is already occupied." % (move[0], move[1])

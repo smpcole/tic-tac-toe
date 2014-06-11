@@ -3,6 +3,7 @@ class Board:
     def __init__(self):
         self.board = [[" " for j in xrange(3)] for i in xrange(3)]
         self.winner = None
+        self.spacesLeft = 9
 
     def __getitem__(self, i):
         return self.board[i]
