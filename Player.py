@@ -8,6 +8,12 @@ class Player:
     def __str__(self):
         return self.symbol
 
+class ComputerPlayer(Player):
+
+    def __init__(self, symbol, board):
+        Player.__init__(self, symbol, board)
+        self.outcomes = {}
+
 class HumanPlayer(Player):
 
     def takeTurn(self):
