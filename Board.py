@@ -52,4 +52,8 @@ class Board:
             self.winner = self[0][2]
             return True
 
+        # Check for tie
+        if self.spacesLeft == 0:
+            return True
+
         return False
