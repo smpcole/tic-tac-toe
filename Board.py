@@ -30,3 +30,20 @@ class Board:
                 h = 3 * h + digit
         return h
                 
+    def endGame(self):
+        """Check for 3 in a row"""
+        for i in xrange(3):
+            # Rows
+            if self[i][0] == self[i][1] and self[i][1] == self[i][2] and self[i][0] != ' ':
+                return True
+            # Columns
+            if self[0][i] == self[1][i] and self[1][i] == self[2][i] and self[0][i] != ' ':
+                return True
+
+        # Diagonals
+        if self[0][0] == self[1][1] and self[1][1] == self[2][2] and self[0][0] != ' ':
+            return True
+        if self[0][2] == self[1][1] and self[1][1] == self[2][0] and self[0][2] != ' ':
+            return True
+
+        return False
