@@ -6,6 +6,14 @@ class Board:
         self.spacesLeft = 9
         self.players = {} # Store pointers to 'x' player and 'o' player
 
+    def write(self, symbol, i, j):
+        old = self[i][j]
+        self[i][j] = symbol
+        if symbol != ' ' and old == ' ':
+            self.spacesLeft -= 1
+        elif symbol == ' ' and old != ' ':
+            self.spacesLeft += 1
+
     def copy(self):
         cpy = Board();
         for i in xrange(3):
