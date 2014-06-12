@@ -3,7 +3,7 @@ from Player import *
 
 def main():
     board = Board()
-    players = (HumanPlayer('x', board), HumanPlayer('o', board))
+    players = (ComputerPlayer('x', board), HumanPlayer('o', board))
     turnNum = 0
     currentPlayer = None
     while not board.endGame():
