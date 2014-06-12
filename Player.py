@@ -37,15 +37,13 @@ class ComputerPlayer(Player):
                 for i in xrange(3):
                     for j in xrange(3):
                         if nextMove[i][j] == ' ':
-                            nextMove[i][j] = self.symbol
-                            nextMove.spacesLeft -= 1
+                            nextMove.write(self.symbol, i, j)
                             newOutcome = self.outcome(nextMove)
                             if newOutcome == "win":
                                 outcome = "win"
                             elif outcome == "lose": # Only change outcome if currently losing
                                 outcome = newOutcome
-                            nextMove[i][j] = ' '
-                            nextMove.spacesLeft += 1
+                            nextMove.write(' ', i, j)
 
                             # Stop if you win
                             if outcome == "win":
@@ -69,7 +67,6 @@ class HumanPlayer(Player):
                 move[i] = int(move[i])
             if board[move[0]][move[1]] == ' ':
                 isValid = True
-                board[move[0]][move[1]] = self.symbol
-                board.spacesLeft -= 1
+                board.write(self.symbol, move[0], move[1])
             else:
                 print "Sorry, %d %d is already occupied." % (move[0], move[1])
