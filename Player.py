@@ -14,6 +14,50 @@ class ComputerPlayer(Player):
         Player.__init__(self, symbol, board)
         self.outcomes = {}
 
+    def outcome(self, board):
+        """Determine whether player wins, loses, or draws on board via dynamic programming.  Player wins if he can force a win, draws if he can force a draw, loses otherwise"""
+
+        # Check whether this board has already been solved        
+        if board not in self.outcomes:
+            outcome = None
+            # Base cases
+            if board.endGame():
+                if board.winner == self:
+                    outcome = "win"
+                elif board.winner == None:
+                    outcome = "draw"
+                else:
+                    outcome = "lose"
+
+            else:
+                outcome = "lose"
+                nextMove = board.copy()
+
+                # Try moving to every open space
+                for i in xrange(3):
+                    for j in xrange(3):
+                        if nextMove[i][j] == ' ':
+                            nextMove[i][j] = self.symbol
+                            nextMove.spacesLeft -= 1
+                            newOutcome = self.outcome(nextMove)
+                            if newOutcome == "win":
+                                outcome = "win"
+                            elif outcome == "lose": # Only change outcome if currently losing
+                                outcome = newOutcome
+                            nextMove[i][j] = ' '
+                            nextMove.spacesLeft += 1
+
+                            # Stop if you win
+                            if outcome == "win":
+                                break
+
+                    if outcome == "win":
+                        break
+
+            self.outcomes[board] = outcome
+
+        return self.outcomes[board] 
+
 class HumanPlayer(Player):
 
     def takeTurn(self):
