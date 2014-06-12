@@ -14,6 +14,31 @@ class ComputerPlayer(Player):
         Player.__init__(self, symbol, board)
         self.outcomes = {}
 
+    def takeTurn(self):
+        bestMove = None
+        bestOutcome = "lose"
+
+        # Try moving to all possible spaces
+        for i in xrange(3):
+            for j in xrange(3):
+                if self.board[i][j] == ' ':
+                    self.board.write(self.symbol, i, j)
+                    outcome = self.outcome(self.board)
+
+                    # If this outcome is an improvement over the previous best
+                    if bestOutcome == "lose" or (bestOutcome == "draw" and outcome == "win"):
+                        bestMove = (i, j)
+                        bestOutcome = outcome
+                    
+                    self.board.write(' ', i, j)
+
+                    # Can stop immediately as soon as you win
+                    if bestOutcome == "win":
+                        break
+            if bestOutcome == "win":
+                break
+        self.board.write(self.symbol, bestMove[0], bestMove[1])
+
     def outcome(self, board):
         """Determine whether player wins, loses, or draws on board via dynamic programming.  Player wins if he can force a win, draws if he can force a draw, loses otherwise"""
 
