@@ -1,3 +1,5 @@
+import random
+
 class Player:
 
     def __init__(self, symbol, board):
@@ -15,8 +17,9 @@ class ComputerPlayer(Player):
         self.outcomes = [{} for i in xrange(3 ** 9)]
 
     def takeTurn(self):
-        bestMove = None
+
         bestOutcome = "lose"
+        moves = {"win" : [], "lose" : [], "draw" : []}
 
         # Try moving to all possible spaces
         for i in xrange(3):
@@ -24,10 +27,10 @@ class ComputerPlayer(Player):
                 if self.board[i][j] == ' ':
                     self.board.write(self.symbol, i, j)
                     outcome = self.outcome(self.board, self.board.otherSymbol(self.symbol))
+                    moves[outcome].append((i, j))
 
                     # If this outcome is an improvement over the previous best
                     if bestOutcome == "lose" or (bestOutcome == "draw" and outcome == "win"):
-                        bestMove = (i, j)
                         bestOutcome = outcome
                     
                     self.board.write(' ', i, j)
@@ -37,6 +40,9 @@ class ComputerPlayer(Player):
                         break
             if bestOutcome == "win":
                 break
+
+        # Choose a random move that gives the best outcome
+        bestMove = random.choice(moves[bestOutcome])
         self.board.write(self.symbol, bestMove[0], bestMove[1])
 
     def outcome(self, board, currentSymbol):
