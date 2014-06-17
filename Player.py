@@ -12,7 +12,7 @@ class ComputerPlayer(Player):
 
     def __init__(self, symbol, board):
         Player.__init__(self, symbol, board)
-        self.outcomes = {}
+        self.outcomes = [{} for i in xrange(3 ** 9)]
 
     def takeTurn(self):
         bestMove = None
@@ -43,7 +43,7 @@ class ComputerPlayer(Player):
         """Determine whether player wins, loses, or draws on board via dynamic programming.  Player wins if he can force a win, draws if he can force a draw, loses otherwise"""
 
         # Check whether this board has already been solved        
-        if board not in self.outcomes or currentSymbol not in self.outcomes[board]:
+        if currentSymbol not in self.outcomes[board.__hash__()]:
             outcome = None
             # Base cases
             if board.endGame():
@@ -86,11 +86,9 @@ class ComputerPlayer(Player):
                     if outcome == outcomes[2]:
                         break
 
-            if board not in self.outcomes:
-                self.outcomes[board] = {}
-            self.outcomes[board][currentSymbol] = outcome
+            self.outcomes[board.__hash__()][currentSymbol] = outcome
 
-        return self.outcomes[board][currentSymbol] 
+        return self.outcomes[board.__hash__()][currentSymbol] 
 
 class HumanPlayer(Player):
 
