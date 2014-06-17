@@ -3,7 +3,10 @@ from Player import *
 
 def main():
     board = Board()
-    players = (ComputerPlayer('x', board), HumanPlayer('o', board))
+    humanFirst = raw_input("Do you want to go first? (y/n) ")
+    players = [ComputerPlayer('x', board), HumanPlayer('o', board)]
+    if humanFirst == 'y':
+        players.reverse()
     turnNum = 0
     currentPlayer = None
     while not board.endGame():
