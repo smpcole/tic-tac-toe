@@ -53,11 +53,12 @@ class Board:
         for i in xrange(3):
             for j in xrange(3):
                 digit = 0
-                if self[i][j] == 'x':
+                if self[i][j] == self.players.keys()[0]:
                     digit = 1
-                elif self[i][j] == 'o':
+                elif self[i][j] == self.players.keys()[1]:
                     digit = 2
                 h = 3 * h + digit
+        assert 0 <= h and h < 3 ** 9
         return h
                 
     def endGame(self):
