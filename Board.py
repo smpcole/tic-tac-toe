@@ -1,9 +1,12 @@
 class Board:
     
-    def __init__(self):
+    def __init__(self, stringRep = "         "):
         self.board = [[" " for j in xrange(3)] for i in xrange(3)]
         self.winner = None
         self.spacesLeft = 9
+        for i in xrange(3):
+            for j in xrange(3):
+                self.write(stringRep[3 * i + j], i, j)
         self.players = {} # Store pointers to 'x' player and 'o' player
 
     def write(self, symbol, i, j):
