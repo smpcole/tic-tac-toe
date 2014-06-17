@@ -23,7 +23,7 @@ class ComputerPlayer(Player):
             for j in xrange(3):
                 if self.board[i][j] == ' ':
                     self.board.write(self.symbol, i, j)
-                    outcome = self.outcome(self.board)
+                    outcome = self.outcome(self.board, self.board.otherSymbol(self.symbol))
 
                     # If this outcome is an improvement over the previous best
                     if bestOutcome == "lose" or (bestOutcome == "draw" and outcome == "win"):
@@ -39,11 +39,11 @@ class ComputerPlayer(Player):
                 break
         self.board.write(self.symbol, bestMove[0], bestMove[1])
 
-    def outcome(self, board):
+    def outcome(self, board, currentSymbol):
         """Determine whether player wins, loses, or draws on board via dynamic programming.  Player wins if he can force a win, draws if he can force a draw, loses otherwise"""
 
         # Check whether this board has already been solved        
-        if board not in self.outcomes:
+        if board not in self.outcomes or currentSymbol not in self.outcomes[board]:
             outcome = None
             # Base cases
             if board.endGame():
@@ -55,31 +55,42 @@ class ComputerPlayer(Player):
                     outcome = "lose"
 
             else:
-                outcome = "lose"
-                nextMove = board.copy()
+
+                # Store outcomes in increasing order of how good they are for the current player
+                outcomes = ["lose", "draw", "win"]
+                if self.symbol != currentSymbol:
+                    outcomes.reverse()
+
+                outcome = outcomes[0]
 
                 # Try moving to every open space
                 for i in xrange(3):
                     for j in xrange(3):
-                        if nextMove[i][j] == ' ':
-                            nextMove.write(self.symbol, i, j)
-                            newOutcome = self.outcome(nextMove)
-                            if newOutcome == "win":
-                                outcome = "win"
-                            elif outcome == "lose": # Only change outcome if currently losing
-                                outcome = newOutcome
-                            nextMove.write(' ', i, j)
+                        if board[i][j] == ' ':
+                            board.write(currentSymbol, i, j)
+                            newOutcome = self.outcome(board, self.board.otherSymbol(currentSymbol))
 
-                            # Stop if you win
-                            if outcome == "win":
+                            # Current player wins iff. he can move to a winning configuration
+                            # Current player loses iff. all moves lead to losing configurations
+
+                            # Update outcome if newOutcome is an improvement
+                            if newOutcome == outcomes[2] or (newOutcome == outcomes[1] and outcome == outcomes[0]):
+                                outcome = newOutcome
+                            
+                            board.write(' ', i, j)
+
+                            # Can stop as soon as you win
+                            if outcome == outcomes[2]:
                                 break
 
-                    if outcome == "win":
+                    if outcome == outcomes[2]:
                         break
 
-            self.outcomes[board] = outcome
+            if board not in self.outcomes:
+                self.outcomes[board] = {}
+            self.outcomes[board][currentSymbol] = outcome
 
-        return self.outcomes[board] 
+        return self.outcomes[board][currentSymbol] 
 
 class HumanPlayer(Player):
 

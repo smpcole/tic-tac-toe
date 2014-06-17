@@ -9,6 +9,12 @@ class Board:
                 self.write(stringRep[3 * i + j], i, j)
         self.players = {} # Store pointers to 'x' player and 'o' player
 
+    def otherSymbol(self, symbol):
+        """Return first symbol that is different from given symbol"""
+        for otherSymbol in self.players:
+            if symbol != otherSymbol:
+                return otherSymbol
+
     def write(self, symbol, i, j):
         old = self[i][j]
         self[i][j] = symbol
@@ -76,6 +82,7 @@ class Board:
 
         # Check for tie
         if self.spacesLeft == 0:
+            self.winner = None
             return True
 
         return False
